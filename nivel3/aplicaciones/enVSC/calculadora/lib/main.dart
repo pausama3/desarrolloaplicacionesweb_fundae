@@ -300,9 +300,7 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
                   const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('2'), child: const Text('2'))),
                   const SizedBox(width: 12),
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('3'), child: const Text('3'))),
-                  const SizedBox(width: 12),
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('sumar'), child: const Text('sumar'))),
+                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('+'), child: const Text('sumar'))),
                 ],
               ),
 
