@@ -125,17 +125,26 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
         case '-':
           _resultado = _resultado - int.parse(_pantalla[i+1]);
           _operaciones.add(numero);
-          _operadores.add('-'); 
+          _operadores.add('-');
+          numero = 0; 
           break;
         case '*':
           _resultado = _resultado * int.parse(_pantalla[i+1]);
           _operaciones.add(numero);
           _operadores.add('*');
+           numero = 0; 
           break;
         case '/':
           _resultado = _resultado / int.parse(_pantalla[i+1]);
           _operaciones.add(numero);
           _operadores.add('/');
+          numero = 0; 
+          break;
+        case '+':
+          _resultado = _resultado + int.parse(_pantalla[i+1]);
+          _operaciones.add(numero);
+          _operadores.add('+');
+          numero = 0; 
           break;
       }
      }
@@ -161,15 +170,70 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
     });
   }
   void _calcularResultado() {
-    setState(() {
-      // Aquí puedes implementar la lógica para calcular el resultado final
-      // usando las listas _operaciones y _operadores.
-      // Por ahora, simplemente mostramos el resultado acumulado.
-      
+  setState(() {
+    // 1. Guardamos el último número que estaba en la recámara
+    _operaciones.add(numero);
+    numero = 0; 
 
-      _pantalla = _resultado.toString();
-    });
-  }
+    // 🛡️ Protección básica por si acaso
+    if (_operaciones.length < 2) return;
+
+    
+    for (int i = 0; i < _operadores.length; i++) {
+      if (_operadores[i] == '/') {          
+        _resultado = _operaciones[i] / _operaciones[i+1];
+        _operaciones[i] = _resultado;
+        _operaciones.removeAt(i+1);
+        _operadores.removeAt(i);    
+        i--;                        
+      }
+    }
+
+  
+    for (int i = 0; i < _operadores.length; i++) {
+      if (_operadores[i] == '*') {          
+        _resultado = _operaciones[i] * _operaciones[i+1];
+        _operaciones[i] = _resultado;
+        _operaciones.removeAt(i+1); 
+        _operadores.removeAt(i);    
+        i--;                        
+      }
+    }
+
+    for (int i = 0; i < _operadores.length; i++) {
+      if (_operadores[i] == '-') {          
+        _resultado = _operaciones[i] - _operaciones[i+1];
+        _operaciones[i] = _resultado;
+        _operaciones.removeAt(i+1); 
+        _operadores.removeAt(i);   
+        i--;                        
+      }
+    }
+
+
+    for (int i = 0; i < _operadores.length; i++) {
+      if (_operadores[i] == '+') {          
+        _resultado = _operaciones[i] + _operaciones[i+1];
+        _operaciones[i] = _resultado;
+        _operaciones.removeAt(i+1); 
+        _operadores.removeAt(i);    
+        i--;                        
+      }
+    }
+
+    // 2. Mostramos el resultado final en la pantalla
+    // Si el resultado es entero (ej: 14.0), mostramos "14" limpio
+    if (_resultado % 1 == 0) {
+      _pantalla = _resultado.toInt().toString();
+    } else {
+      _pantalla = _resultado.toString().replaceAll('.', ',');
+    }
+
+    // 3. 🧹 ¡MUY IMPORTANTE!: Vaciamos las listas para la siguiente operación
+    _operaciones.clear();
+    _operadores.clear();
+  });
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -300,7 +364,10 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
                   const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('2'), child: const Text('2'))),
                   const SizedBox(width: 12),
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('+'), child: const Text('sumar'))),
+                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('3'), child: const Text('3'))),
+                  const SizedBox(width: 12),    
+
+                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('+'), child: const Text('+'))),
                 ],
               ),
 
