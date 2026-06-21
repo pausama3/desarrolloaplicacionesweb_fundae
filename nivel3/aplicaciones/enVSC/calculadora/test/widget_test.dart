@@ -1,30 +1,24 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:calculadora/main.dart';
+import 'package:calculadora/main.dart'; // Asegúrate de que este import coincide con tu proyecto
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Prueba de navegación del Dojo Samurái', (WidgetTester tester) async {
+    // 1. Montamos la aplicación en el simulador de tests
+    await tester.pumpWidget(const CalculadoraApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // 2. Verificamos que arranca en el Menú Principal correctamente
+    expect(find.text('¡Bienvenido!'), findsOneWidget);
+    expect(find.text('Abrir Calculadora'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // 3. Simulamos un toque (tap) en el botón para abrir la calculadora
+    await tester.tap(find.text('Abrir Calculadora'));
+    
+    // 4. Reconstruimos el frame de la app para que procese la animación de viaje (Navigator)
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // 5. Verificamos que ya estamos dentro de la calculadora básica
+    expect(find.text('Calculadora Básica'), findsOneWidget);
+    expect(find.text('0'), findsNWidgets(2)); // Comprueba que la pantalla de la calculadora arranca en 0
   });
 }
