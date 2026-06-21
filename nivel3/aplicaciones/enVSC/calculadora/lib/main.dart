@@ -169,6 +169,58 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
       _operadores.clear();
     });
   }
+  void _restar(){
+    setState(() {
+      for (int i = 0; i < _operadores.length; i++) {
+        if (_operadores[i] == '-') {          
+          _resultado = _operaciones[i] - _operaciones[i+1];
+          _operaciones[i] = _resultado;
+          _operaciones.removeAt(i+1); 
+          _operadores.removeAt(i);   
+          i--;                        
+        }
+      }
+    });
+  }
+  void _multiplicar(){
+    setState(() {
+      for (int i = 0; i < _operadores.length; i++) {
+        if (_operadores[i] == '*') {          
+          _resultado = _operaciones[i] * _operaciones[i+1];
+          _operaciones[i] = _resultado;
+          _operaciones.removeAt(i+1); 
+          _operadores.removeAt(i);    
+          i--;                        
+        }
+      }
+    });
+  }
+  void _dividir(){
+    setState(() {
+      for (int i = 0; i < _operadores.length; i++) {
+        if (_operadores[i] == '/') {          
+          _resultado = _operaciones[i] / _operaciones[i+1];
+          _operaciones[i] = _resultado;
+          _operaciones.removeAt(i+1);
+          _operadores.removeAt(i);    
+          i--;                        
+        }
+      }
+    });
+  }   
+  void _sumar(){
+    setState(() {
+      for (int i = 0; i < _operadores.length; i++) {
+        if (_operadores[i] == '+') {          
+          _resultado = _operaciones[i] + _operaciones[i+1];
+          _operaciones[i] = _resultado;
+          _operaciones.removeAt(i+1); 
+          _operadores.removeAt(i);    
+          i--;                        
+        }
+      }
+    });
+  }
   void _calcularResultado() {
   setState(() {
     // 1. Guardamos el último número que estaba en la recámara
@@ -177,50 +229,11 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
 
     // 🛡️ Protección básica por si acaso
     if (_operaciones.length < 2) return;
-
+    _dividir();
+    _multiplicar();
+    _restar();
+    _sumar();
     
-    for (int i = 0; i < _operadores.length; i++) {
-      if (_operadores[i] == '/') {          
-        _resultado = _operaciones[i] / _operaciones[i+1];
-        _operaciones[i] = _resultado;
-        _operaciones.removeAt(i+1);
-        _operadores.removeAt(i);    
-        i--;                        
-      }
-    }
-
-  
-    for (int i = 0; i < _operadores.length; i++) {
-      if (_operadores[i] == '*') {          
-        _resultado = _operaciones[i] * _operaciones[i+1];
-        _operaciones[i] = _resultado;
-        _operaciones.removeAt(i+1); 
-        _operadores.removeAt(i);    
-        i--;                        
-      }
-    }
-
-    for (int i = 0; i < _operadores.length; i++) {
-      if (_operadores[i] == '-') {          
-        _resultado = _operaciones[i] - _operaciones[i+1];
-        _operaciones[i] = _resultado;
-        _operaciones.removeAt(i+1); 
-        _operadores.removeAt(i);   
-        i--;                        
-      }
-    }
-
-
-    for (int i = 0; i < _operadores.length; i++) {
-      if (_operadores[i] == '+') {          
-        _resultado = _operaciones[i] + _operaciones[i+1];
-        _operaciones[i] = _resultado;
-        _operaciones.removeAt(i+1); 
-        _operadores.removeAt(i);    
-        i--;                        
-      }
-    }
-
     // 2. Mostramos el resultado final en la pantalla
     // Si el resultado es entero (ej: 14.0), mostramos "14" limpio
     if (_resultado % 1 == 0) {
@@ -269,7 +282,7 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
               ),
               
               const SizedBox(height: 20),
-
+               /* 
               // ──────── FILA 1 ────────
               Row(
                 children: [
@@ -303,18 +316,18 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
               ),
               
               const SizedBox(height: 10),
-
+              */
               // ──────── FILA 3 ────────
               Row(
                 children: [
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('raiz'), child: const Text('raiz'))),
-                  const SizedBox(width: 12),
+                 // Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('raiz'), child: const Text('raiz'))),
+                 // const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _borrar(), child: const Text('borrar'))),
                   const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _clear(), child: const Text('clear'))),
                   const SizedBox(width: 12),
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('%'), child: const Text('%'))),
-                  const SizedBox(width: 12),
+                //  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('%'), child: const Text('%'))),
+                  //const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('/'), child: const Text('/'))),
                 ],
               ),
@@ -324,8 +337,8 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
               // ──────── FILA 4 ────────
               Row(
                 children: [
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('x'), child: const Text('x'))),
-                  const SizedBox(width: 12),
+                  //Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('x'), child: const Text('x'))),
+                  //const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('7'), child: const Text('7'))),
                   const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('8'), child: const Text('8'))),
@@ -341,8 +354,8 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
               // ──────── FILA 5 ────────
               Row(
                 children: [
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('1/x'), child: const Text('1/x'))),
-                  const SizedBox(width: 12),
+                  //Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('1/x'), child: const Text('1/x'))),
+                  //const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('4'), child: const Text('4'))),
                   const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('5'), child: const Text('5'))),
@@ -358,8 +371,8 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
               // ──────── FILA 6 ────────
               Row(
                 children: [
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('pi'), child: const Text('pi'))),
-                  const SizedBox(width: 12),
+                  //Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('pi'), child: const Text('pi'))),
+                  //const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('1'), child: const Text('1'))),
                   const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('2'), child: const Text('2'))),
@@ -376,14 +389,14 @@ class _CalculadoraHomeState extends State<CalculadoraHome> {
               // ──────── FILA 7 ────────
               Row(
                 children: [
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('x'), child: const Text('x'))),
-                  const SizedBox(width: 12),
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('e'), child: const Text('e'))),
-                  const SizedBox(width: 12),
+                 // Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('x'), child: const Text('x'))),
+                 // const SizedBox(width: 12),
+                 // Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('e'), child: const Text('e'))),
+                  //const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _introducirNumero('0'), child: const Text('0'))),
                   const SizedBox(width: 12),
-                  Expanded(child: ElevatedButton(onPressed: () => _introducirNumero(','), child: const Text(','))),
-                  const SizedBox(width: 12),
+                  //Expanded(child: ElevatedButton(onPressed: () => _introducirNumero(','), child: const Text(','))),
+                  //const SizedBox(width: 12),
                   Expanded(child: ElevatedButton(onPressed: () => _calcular(), child: const Text('='))),
                 ],
               ),
